@@ -5,24 +5,23 @@ import threading
 import time
 from datetime import datetime
 
-def temp_logger(ard):
+def logger(ard):
   # send msg to arduino
   ard.write('T')
   
   # wait a second for reply
-  time.sleep(1)
+  time.sleep(5)
   
   # read 5 bytes from arduino (string sent)
-  temp = ard.read(5)
-  print temp
+  status = ard.read(50) # pick a high number we don't expect to get since we are non-blocking (timeout=0)
+  print status
   
   # open file for writing data
-  f = open('pythontemp_logger.txt', 'a')
-  
-  now_time = datetime.now()
-  str_now_time = now_time.strftime("%H:%M:%S")
-  f.write(str_now_time + ',' + temp + '\n')
-  f.close()
+  #f = open('pythontemp_logger.txt', 'a')
+  #now_time = datetime.now()
+  #str_now_time = now_time.strftime("%H:%M:%S")
+  #f.write(str_now_time + ',' + temp + '\n')
+  #f.close()
   
   # start the timer again
   global t
@@ -36,14 +35,14 @@ if __name__ == '__main__':
   
   # attempt to make serial connection to arduino
   try:
-    arduino = serial.Serial('/dev/tty.usbserial-A600agDn', 9600)
+    arduino = serial.Serial('/dev/fishtank', 57600, timeout=0)
   except:
     print 'ERROR: whilst opening serial port'
     exit(0)
   
-  # wait 2 seconds for arduino to reset
+  # wait 3 seconds for arduino to reset
   time.sleep(3)
   
   # start the initial timer
-  t = threading.Timer(10.0, temp_logger, [arduino])
+  t = threading.Timer(10.0, logger, [arduino])
   t.start()
