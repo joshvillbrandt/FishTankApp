@@ -11,7 +11,9 @@
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#define DEBUG true
+#define DEBUG false
+#define COUNTS_TO_VOLTS (5.0/1023.0)
+char recMsg = '0';
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 #define ONE_WIRE_BUS_PIN 2
@@ -22,63 +24,67 @@ DeviceAddress tankAddress;
 void setup(void)
 {
   // start serial port
-  Serial.begin(9600);
-  Serial.println("Dallas Temperature IC Control Library Demo");
+  Serial.begin(57600);
+  if(DEBUG) Serial.println("Dallas Temperature IC Control Library Demo");
 
   // locate devices on the bus
-  Serial.print("Locating devices...");
+  if(DEBUG) Serial.print("Locating devices...");
   sensors.begin();
-  Serial.print("Found ");
-  Serial.print(sensors.getDeviceCount(), DEC);
-  Serial.println(" devices.");
+  if(DEBUG) {
+    Serial.print("Found ");
+    Serial.print(sensors.getDeviceCount(), DEC);
+    Serial.println(" devices.");
+  }
 
   // report parasite power requirements
-  Serial.print("Parasite power is: "); 
-  if (sensors.isParasitePowerMode()) Serial.println("ON");
-  else Serial.println("OFF");
+  if(DEBUG) {
+    Serial.print("Parasite power is: "); 
+    if (sensors.isParasitePowerMode()) Serial.println("ON");
+    else Serial.println("OFF");
+  }
 
   // grab address
-  if (!sensors.getAddress(tankAddress, 0)) Serial.println("Unable to find address for Device 0");
-  Serial.print("Device 0 Address: ");
-  printAddress(tankAddress);
-  Serial.println();
+  if (!sensors.getAddress(tankAddress, 0)) {
+    if(DEBUG) Serial.println("Unable to find address for Device 0");
+  }
+  if(DEBUG) {
+    Serial.print("Device 0 Address: ");
+    printAddress(tankAddress);
+    Serial.println();
+  }
 
   // set the resolution to 12 bit
   sensors.setResolution(tankAddress, 12);
-  Serial.print("Device 0 Resolution: ");
-  Serial.print(sensors.getResolution(tankAddress), DEC); 
-  Serial.println();
-}
-
-// function to print the temperature for a device
-void printTemperature(float tempC)
-{
-  //Serial.print(tempC);
-  //Serial.print("C, ");
-  Serial.print(DallasTemperature::toFahrenheit(tempC));
-  Serial.print("F");
+  if(DEBUG) {
+    Serial.print("Device 0 Resolution: ");
+    Serial.print(sensors.getResolution(tankAddress), DEC); 
+    Serial.println();
+  }
 }
 
 void loop(void)
 {
-  // dallas sensor
-  sensors.requestTemperatures(); // Send the command to get temperatures
+  // wait for data request
+  if(!DEBUG) {
+    while(Serial.available() > 0) {
+      recMsg = Serial.read();
+    }
+  }
   
-  // photo diode
+  // tank temp sensor
+  sensors.requestTemperatures(); // Send the command to get temperatures
+  float tTankF = sensors.getTempF(tankAddress);
+  
+  // photo diode for tank light
   int lightRaw = analogRead(A0);
-  // light off is about 20
-  // light on is about 36
+  // light off is about 20, light on is about 36
   boolean light = lightRaw > 28;
   
   // ambient temp sensor
-  int tAmbientRaw = analogRead(A1);
-  float tAmbientC = 100.0 * (tAmbientRaw/1023.0)*5.0 - 50.0;
+  float tAmbientRaw = analogRead(A1)*COUNTS_TO_VOLTS;
+  float tAmbientC = 100.0 * tAmbientRaw - 50.0;
   //float tAmbientF = tAmbientC * 9.0 / 5.0 + 32.0;
-  // print out the value you read:
-  //Serial.print(tAmbientRaw);
-  //Serial.print("\t\t");
-  //Serial.println(tAmbientF);
-  //delay(10);        // delay in between reads for stability
+  float tAmbientF = DallasTemperature::toFahrenheit(tAmbientC);
   
   // It responds almost immediately. Let's print out the data
   if(DEBUG) {
@@ -87,11 +93,21 @@ void loop(void)
     if(light) Serial.print("on ");
     else Serial.print("off");
     Serial.print("   Ambient: ");
-    printTemperature(tAmbientC); // Use a simple function to print out the data
-    Serial.print("   Tank: ");
-    printTemperature(sensors.getTempC(tankAddress)); // Use a simple function to print out the data
-    Serial.println("");
+    Serial.print(tAmbientF);
+    Serial.print("F   Tank: ");
+    Serial.print(tTankF);
+    Serial.println("F");
   }
+  else if(recMsg!='0') {
+    Serial.print(lightRaw);
+    Serial.print(',');
+    Serial.print(tAmbientF);
+    Serial.print(',');
+    Serial.print(tTankF);
+  }
+  
+  // force us to wait for serial input again
+  recMsg = '0';
 }
 
 // function to print a device address
