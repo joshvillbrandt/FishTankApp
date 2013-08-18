@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{% block title %}Fish Tank App{% endblock title %}</title>
+
+        <!-- CSS -->
+        <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/bootstrap-glyphicons.css" rel="stylesheet">
+        <link href="{{ STATIC_URL }}css/fishtank.css" rel="stylesheet">
+        <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
+    </head>
+
+    <body>
+        <!-- Wrap all page content here -->
+        <div id="wrap">
+            
+            <!-- Fixed navbar -->
+            <div class="navbar navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="/">Fish Tank App</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <!--<form class="navbar-form form-inline navbar-right" action="/avilib/browse/" method="get">
+                            <input type="input" class="form-control" placeholder="username">
+                            <input type="password" class="form-control" placeholder="password">
+                            <button type="submit" class="btn btn-success">Go</button>
+                        </form>-->
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+            
+            <div class="container">
+
+<!-- START CONTENT -->
+{% block content %}content...{% endblock content %}
+<!-- END CONTENT -->
+
+            </div> <!-- /container -->
+            
+        </div><!-- /wrap -->
+
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted credit"><span>Fish Tank App v1.0.</span></p>
+            </div>
+        </div>
+
+        <!-- JavaScript placed at the end of the document so the pages load faster -->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <!--<script src="{{ STATIC_URL }}js/jquery-1.10.2.min.js"></script>-->
+        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script src="{{ STATIC_URL }}js/highcharts.js"></script>
+        <script src="{{ STATIC_URL }}js/fishtank.js"></script>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="chart">
+    loading...
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="well">
+            <h2>Statistics</h2>
+            <p>For currently loaded data:</p>
+            <dl class="dl-horizontal">
+                <dt>Min Tank Temp</dt>
+                <dd>0 °F</dd>
+                <dt>Avg Tank Temp</dt>
+                <dd>0 °F</dd>
+                <dt>Max Tank Temp</dt>
+                <dd>0 °F</dd>
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Min Ambient Temp</dt>
+                <dd>0 °F</dd>
+                <dt>Avg Ambient Temp</dt>
+                <dd>0 °F</dd>
+                <dt>Max Ambient Temp</dt>
+                <dd>0 °F</dd>
+            </dl>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="well">
+            <h2>Chart Options</h2>
+            <form role="form">
+                <div class="form-group">
+                    <label for="data-range">Data Range</label>
+                    <select class="form-control" id="data-range">
+                        <option>Last 24 Hours</option>
+                        <option>Last 7 Days</option>
+                        <option>All Data</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-default">Apply</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="well">
+            <h2>Tank Settings</h2>
+            <form role="form">
+                <div class="form-group">
+                    <label for="light-on">Light On Time</label>
+                    <input type="text" class="form-control" id="light-on" value="9:00 am">
+                </div>
+                <div class="form-group">
+                    <label for="light-off">Light Off Time</label>
+                    <input type="text" class="form-control" id="light-off" value="10:00 pm">
+                </div>
+                <div class="form-group">
+                    <label for="logger-delay">Logger Sample Delay</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="logger-delay" value="600">
+                        <span class="input-group-addon">seconds</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default">Save</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
+{% endblock content %}
