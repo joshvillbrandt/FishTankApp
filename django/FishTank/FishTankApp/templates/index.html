@@ -6,9 +6,9 @@
 </div>
 
 <select class="pull-right" id="chart-data-range">
-    <option>Last 24 Hours</option>
-    <option>Last 7 Days</option>
-    <option>All Data</option>
+    <option value="1">Last 24 Hours</option>
+    <option value="7">Last 7 Days</option>
+    <option value="0">All Data</option>
 </select>
 
 <div class="row">
@@ -48,12 +48,19 @@
             <h2>Tank Settings</h2>
             <form role="form">
                 <div class="form-group">
-                    <label for="light-on">Light On Time</label>
-                    <input type="text" class="form-control" id="light-on" value="9:00 am" disabled>
+                    <label for="light-on">Tank Light Enable</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="light-on" value="9:00 am" disabled>
+                        <span class="input-group-addon">to</span>
+                        <input type="text" class="form-control" id="light-off" value="10:00 pm" disabled>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="light-off">Light Off Time</label>
-                    <input type="text" class="form-control" id="light-off" value="10:00 pm" disabled>
+                    <label for="light-off">Heater Enable</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="heater-max" value="78.00" disabled>
+                        <span class="input-group-addon">°F</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="logger-delay">Logger Sample Delay</label>

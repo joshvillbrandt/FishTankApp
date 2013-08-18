@@ -21,10 +21,13 @@ def json(request, action = None):
     }
     
     if action == 'getData':
-        t = datetime.now() - timedelta(days=int(request.GET['days']))
         response['result'] = 'success'
         response['data'] = []
-        datalog_set = DataLog.objects.filter(date_logged__gte=t).order_by('date_logged')
+        if int(request.GET['days']) < 1:
+            datalog_set = DataLog.objects.all().order_by('date_logged')
+        else:
+            t = datetime.now() - timedelta(days=int(request.GET['days']))
+            datalog_set = DataLog.objects.filter(date_logged__gte=t).order_by('date_logged')
         for datalog in datalog_set:
             d = {}
             d['date_logged'] = datalog.date_logged

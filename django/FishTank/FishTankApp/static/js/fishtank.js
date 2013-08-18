@@ -17,10 +17,8 @@ function dataStats(idBase, data) {
     $('#'+idBase+'-max').html(max.toFixed(2));
 }
 
-$(document).ready(function() {
-    
-    // get data
-    var args = {days: 1};
+function dataLoad(days) {
+    var args = {days: days};
     $.getJSON('/json/getData/?callback=?', args, function(data, textStatus, jqXHR) {
         // highcharts assumes date are given in local timezone...stupid
         // could maybe also use the plotOptions.line.pointState feature
@@ -43,6 +41,7 @@ $(document).ready(function() {
         // datalog chart
         $('#chart').highcharts({
             chart: {
+                alignTicks: false,
                 spacingTop: 40
             },
             title: {
@@ -59,7 +58,10 @@ $(document).ready(function() {
                     value: 0,
                     width: 1,
                     color: '#808080'
-                }]
+                }],
+                min: 70,
+                max: 82,
+                tickInterval: 2
             }, {
                 title: {
                     text: 'Light (counts)',
@@ -70,7 +72,8 @@ $(document).ready(function() {
                 labels: {
                     enabled: false
                 },
-                opposite: true
+                opposite: true,
+                gridLineWidth: 0
             }],
             legend: {
                 floating: true,
@@ -116,5 +119,16 @@ $(document).ready(function() {
         dataStats('tambient', tAmbient);
         
     }); // end getJSON
+}
+
+$(document).ready(function() {
+    
+    // load initial data for last day
+    dataLoad(1);
+    
+    // load data with dropdown
+    $('#chart-data-range').change(function(){
+        dataLoad($(this).val());
+    });
     
 }); // end document ready
