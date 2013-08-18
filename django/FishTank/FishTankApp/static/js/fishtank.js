@@ -34,7 +34,10 @@ $(document).ready(function() {
             var d = new Date(data.data[i]['date_logged']).getTime() - localOffset;
             tTank.push([d, data.data[i]['temp_tank']]);
             tAmbient.push([d, data.data[i]['temp_ambient']]);
-            lTank.push([d, data.data[i]['light_ambient']]);
+            if(data.data[i]['light_ambient'] >= 39) // counts
+                lTank.push([d, 1]);
+            else
+                lTank.push([d, 0]);
         }
 
         // datalog chart
