@@ -1,4 +1,21 @@
-var iController;
+function dataStats(idBase, data) {
+    var min = 200, max = -200, sum = 0, avg = 0;
+    
+    for(var i = 0; i < data.length; i++) {
+        min = Math.min(min, data[i][1]);
+        max = Math.max(max, data[i][1]);
+        sum += data[i][1];
+    }
+    
+    // find average
+    // this average is total BS if the sampling rate isn't consistent!
+    if(data.length > 0)
+        var avg = sum / data.length;
+    
+    $('#'+idBase+'-min').html(min.toFixed(2));
+    $('#'+idBase+'-avg').html(avg.toFixed(2));
+    $('#'+idBase+'-max').html(max.toFixed(2));
+}
 
 $(document).ready(function() {
     
@@ -90,6 +107,10 @@ $(document).ready(function() {
                 enabled: false
             }
         });
+        
+        // data stats
+        dataStats('ttank', tTank);
+        dataStats('tambient', tAmbient);
         
     }); // end getJSON
     

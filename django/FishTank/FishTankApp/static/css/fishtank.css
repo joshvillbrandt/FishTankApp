@@ -56,13 +56,23 @@ body {
 
 /* index */
 
+.fishtank-layout {
+    position: relative;
+}
+
+#chart-data-range {
+    position: absolute;
+    top: 84px;
+    right: 30px;
+}
+
 #chart {
     width: 100%;
     height: 440px;
     margin: 20px 0 60px;
 }
 
-.well > .h2 {
+.well > h2 {
     margin-top: 0;
 }
 
