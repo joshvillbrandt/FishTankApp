@@ -7,7 +7,8 @@ from decimal import *
 #from datetime import datetime
 
 # import django settings
-import os
+import os, sys
+sys.path.append('var/sites/FishTank/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 import settings
 
