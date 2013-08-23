@@ -1,7 +1,9 @@
 FishTankApp
 ===========
 
-A collection of tools for my desktop fish tank. This app uses an Arduino with some Sparkfun sensors to read the temperature of a fish tank. A python script running on an Ubuntu machine queries the Arduino for the data and stores it in the Django database. The Django app servers a webpage that shows the data in graphical form. The website is made with Bootstrap, jQuery, and Highcharts.
+A collection of tools for my desktop fish tank.
+
+This app uses an Arduino with some Sparkfun sensors to read the temperature of a fish tank. A python script running on an Ubuntu machine queries the Arduino for the data and stores it in the Django database. The Django app servers a webpage that shows the data in graphical form. The website is made with Bootstrap, jQuery, and Highcharts.
 
 # Installation
 1. make circuit and hook up sensors
@@ -19,3 +21,16 @@ Set up a device shortcut like so:
     #sudo adduser $(whoami) dialout # or group root or run logger as root
 
 Unfortunately, the symbolic link we created didn't maintain the dailup group, so only root has permission to access this device. I'm working around this by just having root run the logger. :x
+
+# Upstart logger
+
+install with `sudo cp fishtank-logger.conf /etc/init`
+
+run with `sudo start fishtank-logger`
+
+check status with `initctl status fishtank-logger`
+
+# Migrating DB
+
+    python manage.py dumpdata FishTankApp.DataLog --indent 2 > DataLog.json
+    python manage.py loaddata DataLog.json
