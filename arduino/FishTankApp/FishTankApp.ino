@@ -43,17 +43,17 @@ void setup(void)
   }
 
   // grab address
-  if (!sensors.getAddress(ambientAddress, 0)) {
+  if (!sensors.getAddress(tankAddress, 0)) {
     if(DEBUG) Serial.println("Unable to find address for Device 0");
   }
-  if (!sensors.getAddress(tankAddress, 1)) {
-    if(DEBUG) Serial.println("Unable to find address for Device 0");
+  if (!sensors.getAddress(ambientAddress, 1)) {
+    if(DEBUG) Serial.println("Unable to find address for Device 1");
   }
   if(DEBUG) {
     Serial.print("Addresses: ");
-    printAddress(ambientAddress);
-    Serial.print(", ");
     printAddress(tankAddress);
+    Serial.print(", ");
+    printAddress(ambientAddress);
     Serial.println();
   }
 
