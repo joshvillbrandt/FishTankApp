@@ -32,7 +32,7 @@ function dataLoad(days) {
             var d = new Date(data.data[i]['date_logged']).getTime() - localOffset;
             tTank.push([d, data.data[i]['temp_tank']]);
             tAmbient.push([d, data.data[i]['temp_ambient']]);
-            if(data.data[i]['light_ambient'] >= 32) // counts
+            if(data.data[i]['light_ambient'] >= 34) // counts
                 lTank.push([d, 1]);
             else
                 lTank.push([d, 0]);
